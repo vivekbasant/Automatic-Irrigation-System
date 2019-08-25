@@ -1,0 +1,41 @@
+Start 
+adc() 
+ {    
+  adc input channel-PF0 ,AVCC reference voltage    
+  enable adc with prescalar 128 
+ } 
+adc_value() 
+ {     
+  start A to D conversion     
+  wait for conversion to complete     
+  clear ADIF by writing one to it     
+  return to location of the adc conversion result register
+ } 
+pwm() 
+ {     
+  ICR counter top value set     
+  Phase correct mode     
+  Non inverted pwm output      
+  No pre-scaling     
+  Enable pin PC6 goes to motor driver as output pin 
+ } 
+main() 
+ {      
+  cw and ccw pin goes to motor driver as output pin
+  making enable pin of motor1 high 
+  calling function- pwm()       
+  calling function –adc() 
+  while(1) 
+   {       
+    adc_value() –calling function       
+    moisture     
+    if(moisture>=40)        
+     {           
+      Motor pump off        
+     }     
+    else if(moisture<40)         
+     {            
+      Motor pump on         
+     } 
+  return 0 
+ }
