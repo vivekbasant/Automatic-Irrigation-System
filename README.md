@@ -1,1 +1,2 @@
 # Automatic-Irrigation-System
+The project is designed to develop an automatic irrigation system which switches the pump motor ON/OFF on sensing the moisture content of the soil .The project uses an AT90USB1287 microcontroller which is programmed to receive the input signal of varying moisture condition of the soil through sensing arrangement. It uses anal;og to digital conversion technique and pulse width modulation. 
