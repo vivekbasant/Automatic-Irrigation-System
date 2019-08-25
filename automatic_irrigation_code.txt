@@ -1,0 +1,48 @@
+#include <avr/io.h> 
+#define OC3A PC6 
+int value; 
+float moisture;  
+void adc(void) 
+{ 
+  ADMUX |=(1<<REFS0); 
+  ADCSRA|=(1<<ADEN)|(1<<ADPS2)| (1<<ADPS1)|(1<<ADPS0); 
+} 
+unsigned int adc_value(void) 
+{ 
+  int high; ADCSRA|=(1<<ADSC); 
+  while(!(ADCSRA&(1<<ADIF))); 
+  ADCSRA|=(1<<ADIF); 
+  return(ADCW); 
+} 
+void pwm(void) 
+{ 
+  ICR3=0XFF; 
+  TCCR3A|=(1<<WGM31)|(1<<COM3A1); 
+  TCCR3B|=(1<<WGM33)|(1<<CS30); 
+  DDRC|=(1<<PC6); 
+} 
+int main(void) 
+{ 
+  DDRC|=(1<<PC0)|(1<<PC1); 
+  PORTC|=(1<<PC6); 
+  pwm(); 
+  adc();     
+  while(1)     
+   {         
+     value=adc_value(); 
+     moisture=100-(value*100.00)/1023.00; 
+     if(moisture>=40) 
+      { 
+        OCR3A=0X0000; 
+        PORTC&=~(1<<PC0); 
+        PORTC&=~(1<<PC1); 
+      } 
+     else if(moisture<40) 
+      { 
+        OCR3A=0X00EE; 
+        PORTC|=(1<<PC0); 
+        PORTC&=~(1<<PC1); 
+      } 
+   } 
+  return 0; 
+} 
